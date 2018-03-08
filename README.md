@@ -1,6 +1,6 @@
 # react-sugar-styled
 ![GitHub version](https://badge.fury.io/gh/roast-cms%2Freact-sugar-styled.svg)
-> 🍬 Tools and magic numbers for styled-components theme used with roast-cms React components.
+> 🍬 Tools and magic numbers for styled-components theme used within roast-cms React components.
 
 ### What is this?
 
