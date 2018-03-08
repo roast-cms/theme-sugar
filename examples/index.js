@@ -30,8 +30,8 @@ const Subtitle = styled.h2`
   ${props => props.theme.typography.title.auto} font-size: ${props =>
       props.theme.size.font.make.larger / 2}em;
 `
-const Red = styled.strong`color: ${props => props.theme.color.brand};`
-const LessRed = styled(Red)`
+const Branded = styled.strong`color: ${props => props.theme.color.brand};`
+const BrandedFade = styled(Branded)`
   color: ${props => props.theme.color.alpha.brand(props.theme.opacity.half)}
 `
 
@@ -43,7 +43,7 @@ render(
           <Title>Title</Title>
           <Subtitle>Subtitle</Subtitle>
           <p>
-            Paragraph text. <Red>Red</Red>, <LessRed>less red</LessRed>.
+            Paragraph text. <Branded>Brand colour</Branded>, <BrandedFade>faded brand clour</BrandedFade>.
           </p>
         </Article>
       </Main>
