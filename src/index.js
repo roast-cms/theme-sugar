@@ -3,7 +3,7 @@ import { exact, min, max, breakpoints } from "./utils"
 
 export const Sugar = {
   color: {
-    brand: "#ff0000",
+    brand: "#00a7ff",
     foreground: "#525252",
     background: "#fff",
     highlight: "#8cff00",
@@ -12,7 +12,7 @@ export const Sugar = {
         return `rgba(82, 82, 82, ${alpha})`
       },
       brand: alpha => {
-        return `rgba(255, 0, 0, ${alpha})`
+        return `rgba(0, 167, 255, ${alpha})`
       },
       highlight: alpha => {
         return `rgba(140, 255, 0, ${alpha})`
