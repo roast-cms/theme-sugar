@@ -54,7 +54,8 @@ export const Sugar = (options = {}) => {
           font-weight: ${palette.font_heading_weight};
           margin: 0;
         `,
-        lineHeight: 1.15
+        lineHeight: 1.15,
+        font: palette.font_heading
       },
       text: {
         auto: css`
@@ -63,7 +64,8 @@ export const Sugar = (options = {}) => {
           letter-spacing: 0.025em;
           line-height: ${() => Sugar(palette).typography.text.lineHeight}em;
         `,
-        lineHeight: 1.75
+        lineHeight: 1.75,
+        font: palette.font_body
       }
     },
     effects: {
