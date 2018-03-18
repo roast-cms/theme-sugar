@@ -4690,6 +4690,10 @@ type-is@~1.6.15:
     media-typer "0.3.0"
     mime-types "~2.1.18"
 
+typeface-indie-flower@^0.0.54:
+  version "0.0.54"
+  resolved "https://registry.yarnpkg.com/typeface-indie-flower/-/typeface-indie-flower-0.0.54.tgz#eb988134d67982c3c35be12389db0c1c247869eb"
+
 typeface-lobster-two@^0.0.54:
   version "0.0.54"
   resolved "https://registry.yarnpkg.com/typeface-lobster-two/-/typeface-lobster-two-0.0.54.tgz#692647d17384701a77a8865311c1bf49b966c912"

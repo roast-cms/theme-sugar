@@ -1,20 +1,16 @@
 //
 // tools and utilities
 import { css } from "styled-components"
-import { exact, min, max, breakpoints } from "./utils"
+import { exact, min, max, breakpoints, rgba } from "./utils"
 //
 // theme object
 export const Sugar = (options = {}) => {
-  //
-  // function to convert rgb value to rgba
-  const rgba = (rgb, a = 1) =>
-    `${rgb.replace(")", "").replace("rgb", "rgba")}, ${a})`
   //
   // theme defaults
   const palette = {
     //
     // colours
-    color_brand: options.color_brand || "rgb(0,167,255)",
+    color_brand: options.color_brand || "rgb(208,110,27)",
     color_foreground: options.color_foreground || "rgb(82,82,82)",
     color_background: options.color_background || "rgb(255,255,255)",
     color_highlight: options.color_highlight || "rgb(255,255,0)",

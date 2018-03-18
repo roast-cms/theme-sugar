@@ -7,11 +7,12 @@ import styled, { ThemeProvider } from "styled-components"
 import { Sugar } from "../src/index"
 import "typeface-yanone-kaffeesatz"
 import "typeface-lobster-two"
+import "typeface-indie-flower"
 
 const Main = styled.div`
   & > * ::selection {
     background: ${props => props.theme.color.highlight()};
-    color: ${props=> props.theme.color.background()}
+    color: ${props => props.theme.color.background()};
   }
   ${props => props.theme.size.font.auto} ${props =>
       props.theme.typography.text.auto} margin: 0 auto;
@@ -19,7 +20,7 @@ const Main = styled.div`
   ${props =>
     props.theme.size.breakpoint.min.xxl`max-width: ${props =>
       props.theme.size.block.column.l}px;`};
-  padding: 0 ${props => props.theme.size.block.padding}em;
+  padding: 4em ${props => props.theme.size.block.padding}em;
 `
 const Article = styled.article`
   background: ${props => props.theme.color.background()};
@@ -42,29 +43,35 @@ const BrandedFade = styled(Branded)`
   color: ${props => props.theme.color.brand(props.theme.opacity.half)};
   font-size: ${props => props.theme.size.font.make.smaller}em;
 `
+const SpecialFont = styled.span`
+  font-family: ${props => props.theme.font_special};
+`
 
 render(
   <div>
     <ThemeProvider
-      theme={Sugar({
-        color_brand: "rgb(255,144,244)",
-        color_background: "rgb(44,44,44)",
-        color_foreground: "rgb(224,213,255)",
-
-        font_heading: "'Yanone Kaffeesatz', sans-serif",
-        font_heading_weight: 400,
-
-        font_body: "'Lobster Two', serif",
-
-        size_base: 30,
-        size_column_medium: 900,
-        size_column_large: 1200,
-        size_block_padding: 2,
-        size_block_spacing: 1.5,
-        size_block_border: 10,
-
-        effects_border_radius: 0
-      })}
+      theme={{
+        ...Sugar({
+          color_brand: "rgb(189,67,54)",
+          color_background: "rgb(44,44,44)",
+          color_foreground: "rgb(224,213,255)",
+          //
+          font_heading: "'Yanone Kaffeesatz', sans-serif",
+          font_heading_weight: 400,
+          //
+          font_body: "'Lobster Two', serif",
+          //
+          size_base: 28,
+          size_column_medium: 700,
+          size_column_large: 900,
+          size_block_padding: 2,
+          size_block_spacing: 1.5,
+          size_block_border: 10,
+          //
+          effects_border_radius: 1
+        }),
+        font_special: "'Indie Flower', cursive"
+      }}
     >
       <Main>
         <Article>
@@ -72,7 +79,8 @@ render(
           <Subtitle>Subtitle</Subtitle>
           <p>
             Paragraph text. <Branded>Brand colour</Branded>,{" "}
-            <BrandedFade>faded brand clour</BrandedFade>.
+            <BrandedFade>faded brand clour</BrandedFade>.{" "}
+            <SpecialFont>Special font</SpecialFont>.
           </p>
         </Article>
       </Main>

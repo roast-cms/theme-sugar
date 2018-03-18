@@ -1,6 +1,6 @@
 {
   "name": "@roast-cms/react-sugar-styled",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Tools and magic numbers for styled-components theme used with roast-cms React components.",
   "main": "dist/index.js",
   "repository": "https://github.com/roast-cms/react-sugar-styled.git",
@@ -22,6 +22,7 @@
     "styled-components": "3.0.2",
     "typeface-lobster-two": "^0.0.54",
     "typeface-yanone-kaffeesatz": "^0.0.54",
+    "typeface-indie-flower": "^0.0.54",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1",
     "url-loader": "^1.0.1"
