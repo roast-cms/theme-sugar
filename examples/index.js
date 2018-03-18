@@ -5,8 +5,8 @@ import styled, { ThemeProvider } from "styled-components"
 
 // theme
 import { Sugar } from "../src/index"
-import "typeface-roboto"
-import "typeface-open-sans"
+import "typeface-yanone-kaffeesatz"
+import "typeface-lobster-two"
 
 const Main = styled.div`
   & > * ::selection {
@@ -51,7 +51,11 @@ render(
         color_background: "rgb(44,44,44)",
         color_foreground: "rgb(224,213,255)",
 
-        font_body: "Roboto",
+        font_heading: "'Yanone Kaffeesatz', sans-serif",
+        font_heading_weight: 400,
+
+        font_body: "'Lobster Two', serif",
+
         size_base: 30,
         size_column_medium: 900,
         size_column_large: 1200,

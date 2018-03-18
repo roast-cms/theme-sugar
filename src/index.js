@@ -20,15 +20,10 @@ export const Sugar = (options = {}) => {
     color_highlight: options.color_highlight || "rgb(255,255,0)",
     //
     // fonts
-    font_heading_system: options.font_heading_system || "Arial, sans-serif",
-    get font_heading_load() {
-      return options.font_heading_load || this.font_heading_system
-    },
-    get font_body_system() {
-      return options.font_body_system || this.font_heading_system
-    },
-    get font_body_load() {
-      return options.font_body_load || this.font_body_system
+    font_heading: options.font_heading || "Arial, sans-serif",
+    font_heading_weight: options.font_heading_weight || 700,
+    get font_body() {
+      return options.font_body || this.font_heading
     },
     //
     // size
@@ -54,46 +49,24 @@ export const Sugar = (options = {}) => {
       highlight: alpha => rgba(palette.color_highlight, alpha)
     },
     typography: {
-      font: {
-        heading: palette.font_heading,
-        body: palette.font_body
-      },
       title: {
         auto: css`
           color: ${() => Sugar(palette).color.foreground()};
-          font-family: ${() => Sugar(palette).typography.font.heading.system};
-          letter-spacing: 0.005em;
-          line-height: ${() => Sugar(palette).typography.title.lineHeight}em;
-          font-weight: 700;
-          margin: 0;
-          .fonts-loaded-headers & {
-            ${() => Sugar(palette).typography.title.fontsLoaded};
-          }
-        `,
-        fontsLoaded: css`
-          font-family: ${() =>
-            Sugar(palette).typography.font.heading.load}, ${() =>
-          Sugar(palette).typography.font.heading.system};
+          font-family: ${palette.font_heading};
           letter-spacing: 0.025em;
-          font-weight: 600;
-      `,
+          line-height: ${() => Sugar(palette).typography.title.lineHeight}em;
+          font-weight: ${palette.font_heading_weight};
+          margin: 0;
+        `,
         lineHeight: 1.15
       },
       text: {
         auto: css`
           color: ${() => Sugar(palette).color.foreground()};
-          font-family: ${() => Sugar(palette).typography.font.body.system};
-          letter-spacing: 0.05em;
-          line-height: ${() => Sugar(palette).typography.text.lineHeight}em;
-          .fonts-loaded & {
-            ${() => Sugar(palette).typography.text.fontsLoaded};
-          }
-        `,
-        fontsLoaded: css`
-        font-family: ${() => Sugar(palette).typography.font.body.load}, ${() =>
-          Sugar(palette).typography.font.body.system};
+          font-family: ${palette.font_body};
           letter-spacing: 0.025em;
-      `,
+          line-height: ${() => Sugar(palette).typography.text.lineHeight}em;
+        `,
         lineHeight: 1.75
       }
     },

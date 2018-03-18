@@ -4690,13 +4690,13 @@ type-is@~1.6.15:
     media-typer "0.3.0"
     mime-types "~2.1.18"
 
-typeface-open-sans@^0.0.54:
+typeface-lobster-two@^0.0.54:
   version "0.0.54"
-  resolved "https://registry.yarnpkg.com/typeface-open-sans/-/typeface-open-sans-0.0.54.tgz#20f5b5ea5c7f95d89dc1f8b2d2b1457680129cee"
+  resolved "https://registry.yarnpkg.com/typeface-lobster-two/-/typeface-lobster-two-0.0.54.tgz#692647d17384701a77a8865311c1bf49b966c912"
 
-typeface-roboto@^0.0.54:
+typeface-yanone-kaffeesatz@^0.0.54:
   version "0.0.54"
-  resolved "https://registry.yarnpkg.com/typeface-roboto/-/typeface-roboto-0.0.54.tgz#8f02c9a18d1cfa7f49381a6ff0d21ff061f38ad2"
+  resolved "https://registry.yarnpkg.com/typeface-yanone-kaffeesatz/-/typeface-yanone-kaffeesatz-0.0.54.tgz#1949927e04ac1db29f9e7729379f28e046ba6fbf"
 
 ua-parser-js@^0.7.9:
   version "0.7.17"
