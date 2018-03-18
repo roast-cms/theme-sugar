@@ -1,14 +1,16 @@
+//
 // tools
 import React from "react"
 import { render } from "react-dom"
 import styled, { ThemeProvider } from "styled-components"
-
-// theme
+//
+// theming tools and fonts
 import { Sugar } from "../src/index"
 import "typeface-yanone-kaffeesatz"
 import "typeface-lobster-two"
 import "typeface-indie-flower"
-
+//
+// styled components
 const Main = styled.div`
   & > * ::selection {
     background: ${props => props.theme.color.highlight()};
@@ -46,7 +48,8 @@ const BrandedFade = styled(Branded)`
 const SpecialFont = styled.span`
   font-family: ${props => props.theme.font_special};
 `
-
+//
+// app
 render(
   <div>
     <ThemeProvider
