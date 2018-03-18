@@ -15,6 +15,12 @@ export const breakpoints = {
 // px to em
 const pxEm = px => px / 16
 
+//
+// function to convert rgb value to rgba
+export const rgba = (rgb, a = 1) =>
+  `${rgb.replace(")", "").replace("rgb", "rgba")}, ${a})`
+
+
 // print media queries for exact range:
 export const exact = Object.keys(breakpoints).reduce((accumulator, label) => {
   accumulator[label] = (...args) => css`
