@@ -1,5 +1,5 @@
 # react-sugar-styled
-![GitHub version](https://badge.fury.io/gh/roast-cms%2Freact-sugar-styled.svg)
+![NPM version](https://badge.fury.io/gh/roast-cms%2Freact-sugar-styled.svg)
 > 🍬 Customizable and extendable theming dictionary for Styled Components.
 
 ![demo](/graphics/demo.gif?raw=true)
