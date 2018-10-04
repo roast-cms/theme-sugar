@@ -15,14 +15,15 @@ export const S = () => {
             "unit",
             "base"
           ],
-          value: 16
+          value: 16,
+          unit: "px"
         }
       ]
       return aliasSearch.call(options, alias)
     },
     font: {},
     color: {},
-    size: (alias, unit = DEFAULT_UNIT) => {
+    size: (alias, wantedUnit = DEFAULT_UNIT, wantedFormat = "css") => {
       const options = [
         {
           aliases: ["sm", "s", 10, "small"],
@@ -45,12 +46,13 @@ export const S = () => {
           unit: "px"
         }
       ]
-      const wantedValue = aliasSearch.call(options, alias)
-      const wantedUnit = convertUnit.apply(
-        PALETTE,
-        unit === "em" ? ["px", "em"] : ["em", "px"]
-      )
-      return wantedValue * wantedUnit
+      const wantedOption = aliasSearch.call(options, alias)
+      const givenValue = wantedOption.value
+      const givenUnit = wantedOption.unit
+      const wantedValue =
+        givenValue * convertUnit.apply(PALETTE, [givenUnit, wantedUnit])
+      const wanted = printUnit(wantedValue, wantedUnit, wantedFormat)
+      return wanted
     }
   }
   return PALETTE
@@ -68,19 +70,15 @@ export const aliasSearch = function(alias) {
 
 export const convertUnit = function(from, to) {
   const matrix = {
-    em: this.base("fontSize"),
-    px: 1
+    em: this.base("fontSize").value,
+    px: 1,
+    pixels: 1
   }
   return matrix[from] / matrix[to]
 }
 
-export const printUnit = (value, unit = DEFAULT_UNIT) => {
-  switch (unit) {
-    case "value":
-      return value
-    case "px":
-    case "pixels":
-      return value + "px"
-  }
-  return value + DEFAULT_UNIT
+export const printUnit = (value, unit = DEFAULT_UNIT, wantedFormat = "css") => {
+  const print =
+    wantedFormat === "css" ? value + (unit === "pixels" ? "px" : unit) : value
+  return print
 }

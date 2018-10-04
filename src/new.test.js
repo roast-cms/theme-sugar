@@ -24,7 +24,7 @@ describe("convertUnit", () => {
 
 describe("printUnit", () => {
   it("returns number value", () => {
-    expect(printUnit(10, "value")).toEqual(10)
+    expect(printUnit(10, "px", "value")).toEqual(10)
   })
   it("returns em string by default", () => {
     expect(printUnit(10)).toEqual("10em")
