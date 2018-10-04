@@ -56,3 +56,46 @@ describe("S().size", () => {
     expect(S().size("m", "em", "value")).toEqual(1.25)
   })
 })
+
+describe("S(theme)", () => {
+  it("works without any theme being passed as a parameter", () => {
+    expect(S().size(20)).toEqual("1.25em")
+  })
+  it("can accept a theme that replaces current theme defaults", () => {
+    const newTheme = {
+      base: [
+        {
+          aliases: ["fontSize"],
+          value: 10,
+          unit: "px"
+        }
+      ],
+      size: [{ aliases: ["x"], value: "11", unit: "em" }],
+      options: {
+        default: {
+          unit: "px"
+        },
+        extend: false // <--
+      }
+    }
+    expect(S(newTheme).size("x")).toEqual("110px")
+    expect(S(newTheme).size("m")).toBeUndefined()
+  })
+  it("can accept a theme that extendes current theme defaults", () => {
+    const newTheme = {
+      base: [
+        {
+          aliases: ["fontSize"],
+          value: 10,
+          unit: "px"
+        }
+      ],
+      size: [{ aliases: ["x"], value: "11", unit: "em" }],
+      options: {
+        default: {}
+      }
+    }
+    expect(S(newTheme).size("x")).toEqual("11em")
+    expect(S(newTheme).size("m")).toEqual("2em")
+  })
+})

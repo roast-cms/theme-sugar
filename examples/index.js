@@ -12,7 +12,21 @@ import React from "react"
 import { Sugar } from "../src/index"
 import { S, convertUnit } from "../src/new"
 
-console.log(S().size("m"))
+const newTheme = {
+  base: [
+    {
+      aliases: ["fontSize"],
+      value: 10,
+    }
+  ],
+  size: [{ aliases: ["x"], value: "11", unit: "em" }],
+  options: {
+    default: {
+      unit: "px"
+    },
+  }
+}
+console.log(S(newTheme).size("m"))
 //
 //
 //

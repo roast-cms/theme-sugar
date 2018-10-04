@@ -1,54 +1,74 @@
 export const DEFAULT_UNIT = "em"
+export const DEFAULT_PALETTE_BASE = [
+  {
+    // NOTE: aliases["fontSize"] is required
+    aliases: ["fontSize", "font-size", "size", "pixels", "px", "unit", "base"],
+    value: 16,
+    unit: "px"
+  }
+]
+export const DEFAULT_PALETTE_SIZE = [
+  {
+    aliases: ["sm", "s", 10, "small"],
+    value: 10,
+    unit: "px"
+  },
+  {
+    aliases: ["m", "med", "md", "medium", 20],
+    value: 20,
+    unit: "px"
+  },
+  {
+    aliases: ["l", "lg", "large", 40],
+    value: 40,
+    unit: "px"
+  },
+  {
+    aliases: ["xl", "extra", "huge", "giant", "big", 80],
+    value: 80,
+    unit: "px"
+  }
+]
 
-export const S = () => {
+export const S = (theme = {}) => {
   const PALETTE = {
-    screen: {},
+    options: {
+      default: {
+        unit:
+          (theme &&
+            theme.options &&
+            theme.options.default &&
+            theme.options.default.unit) ||
+          DEFAULT_UNIT
+      },
+      extend:
+        theme && theme.options && theme.options.extend === false ? false : true
+    },
     base: alias => {
-      const options = [
-        {
-          aliases: [
-            "fontSize",
-            "font-size",
-            "size",
-            "pixels",
-            "px",
-            "unit",
-            "base"
-          ],
-          value: 16,
-          unit: "px"
-        }
-      ]
+      const options = theme.base
+        ? PALETTE.options.extend
+          ? [...DEFAULT_PALETTE_BASE, ...theme.base]
+          : theme.base
+        : DEFAULT_PALETTE_BASE
       return aliasSearch.call(options, alias)
     },
+    screen: {},
     font: {},
     color: {},
-    size: (alias, wantedUnit = DEFAULT_UNIT, wantedFormat = "css") => {
-      const options = [
-        {
-          aliases: ["sm", "s", 10, "small"],
-          value: 10,
-          unit: "px"
-        },
-        {
-          aliases: ["m", "med", "md", "medium", 20],
-          value: 20,
-          unit: "px"
-        },
-        {
-          aliases: ["l", "lg", "large", 40],
-          value: 40,
-          unit: "px"
-        },
-        {
-          aliases: ["xl", "extra", "huge", "giant", "big", 80],
-          value: 80,
-          unit: "px"
-        }
-      ]
+    size: (
+      alias,
+      wantedUnit = PALETTE.options.default.unit,
+      wantedFormat = "css"
+    ) => {
+      const options = theme.size
+        ? PALETTE.options.extend
+          ? [...DEFAULT_PALETTE_SIZE, ...theme.size]
+          : theme.size
+        : DEFAULT_PALETTE_SIZE
       const wantedOption = aliasSearch.call(options, alias)
       const givenValue = wantedOption.value
       const givenUnit = wantedOption.unit
+      if (!givenValue || !givenUnit) return
       const wantedValue =
         givenValue * convertUnit.apply(PALETTE, [givenUnit, wantedUnit])
       const wanted = printUnit(wantedValue, wantedUnit, wantedFormat)
