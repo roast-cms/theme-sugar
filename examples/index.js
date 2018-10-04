@@ -22,7 +22,7 @@ const Main = styled.div`
     color: ${props => props.theme.color.background()};
   }
   ${props => props.theme.size.font.auto} ${props =>
-  props.theme.typography.text.auto} margin: 0 auto;
+    props.theme.typography.text.auto} margin: 0 auto;
   max-width: ${props => props.theme.size.block.column.m}px;
   ${props =>
     props.theme.size.breakpoint.min.xxl`max-width: ${props =>

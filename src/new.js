@@ -1,3 +1,5 @@
+export const DEFAULT_UNIT = "em"
+
 export const S = () => {
   const PALETTE = {
     screen: {},
@@ -20,7 +22,7 @@ export const S = () => {
     },
     font: {},
     color: {},
-    size: (alias, unitType = "em") => {
+    size: (alias, unit = DEFAULT_UNIT) => {
       const options = [
         {
           aliases: ["sm", "s", 10, "small"],
@@ -43,36 +45,42 @@ export const S = () => {
           unit: "px"
         }
       ]
-      return (
-        aliasSearch.call(options, alias) *
-        convertUnit.apply(
-          PALETTE,
-          unitType === "em" ? ["px", "em"] : ["em", "px"]
-        )
+      const wantedValue = aliasSearch.call(options, alias)
+      const wantedUnit = convertUnit.apply(
+        PALETTE,
+        unit === "em" ? ["px", "em"] : ["em", "px"]
       )
+      return wantedValue * wantedUnit
     }
   }
   return PALETTE
 }
 
 export const aliasSearch = function(alias) {
-  let search
+  let search = {}
   this.forEach((v, index) => {
-    if (v.aliases.indexOf(alias) > -1) {
-      search = this[index].value
+    if (v && v.aliases && v.aliases.indexOf(alias) > -1) {
+      search = this[index]
     }
   })
   return search
 }
 
 export const convertUnit = function(from, to) {
-  // px -> px = 1
-  // em -> em = 1
-  // px -> em = 1/16
-  // em -> px = 16/1
+  const matrix = {
+    em: this.base("fontSize"),
+    px: 1
+  }
+  return matrix[from] / matrix[to]
+}
 
-  const px = this.base("fontSize")
-  const emPx = px
-  const pxEm = 1 / px
-  return from === "px" && to === "em" ? pxEm : emPx
+export const printUnit = (value, unit = DEFAULT_UNIT) => {
+  switch (unit) {
+    case "value":
+      return value
+    case "px":
+    case "pixels":
+      return value + "px"
+  }
+  return value + DEFAULT_UNIT
 }
