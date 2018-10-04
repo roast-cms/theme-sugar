@@ -37,3 +37,22 @@ describe("printUnit", () => {
     expect(printUnit(10, "pixels")).toEqual("10px")
   })
 })
+
+describe("S().size", () => {
+  it("returns medium size aliases in default em", () => {
+    expect(S().size("m")).toEqual("1.25em")
+    expect(S().size("med")).toEqual("1.25em")
+    expect(S().size("md")).toEqual("1.25em")
+    expect(S().size("medium")).toEqual("1.25em")
+    expect(S().size(20)).toEqual("1.25em")
+  })
+  it("returns medium size in px", () => {
+    expect(S().size("m", "px")).toEqual("20px")
+  })
+  it("returns number value for medium size in px", () => {
+    expect(S().size("m", "px", "value")).toEqual(20)
+  })
+  it("returns number value for medium size in em", () => {
+    expect(S().size("m", "em", "value")).toEqual(1.25)
+  })
+})

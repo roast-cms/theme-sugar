@@ -10,9 +10,9 @@ import { render } from "react-dom"
 import React from "react"
 
 import { Sugar } from "../src/index"
-import {S, convertUnit} from "../src/new"
+import { S, convertUnit } from "../src/new"
 
-console.log(S().size("m", "px", "css"))
+console.log(S().size("m"))
 //
 //
 //
