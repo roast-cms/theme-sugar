@@ -20,35 +20,34 @@ const pxEm = px => px / 16
 export const rgba = (rgb, a = 1) =>
   `${rgb.replace(")", "").replace("rgb", "rgba")}, ${a})`
 
-
 // print media queries for exact range:
 export const exact = Object.keys(breakpoints).reduce((accumulator, label) => {
   accumulator[label] = (...args) => css`
-		@media (min-width: ${pxEm(breakpoints[label][0])}em) and (max-width: ${pxEm(
-    breakpoints[label][1]
-  )}em) {
-			${css(...args)}
-		}
-	`
+    @media (min-width: ${pxEm(breakpoints[label][0])}em) and (max-width: ${pxEm(
+  breakpoints[label][1]
+)}em) {
+      ${css(...args)};
+    }
+  `
   return accumulator
 }, {})
 
 // print media queries with no max value:
 export const min = Object.keys(breakpoints).reduce((accumulator, label) => {
   accumulator[label] = (...args) => css`
-		@media (min-width: ${pxEm(breakpoints[label][0])}em) {
-			${css(...args)}
-		}
-	`
+    @media (min-width: ${pxEm(breakpoints[label][0])}em) {
+      ${css(...args)};
+    }
+  `
   return accumulator
 }, {})
 
 // print media queries with no min value:
 export const max = Object.keys(breakpoints).reduce((accumulator, label) => {
   accumulator[label] = (...args) => css`
-		@media (max-width: ${pxEm(breakpoints[label][1])}em) {
-			${css(...args)}
-		}
-	`
+    @media (max-width: ${pxEm(breakpoints[label][1])}em) {
+      ${css(...args)};
+    }
+  `
   return accumulator
 }, {})

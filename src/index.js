@@ -99,10 +99,10 @@ export const Sugar = (options = {}) => {
         },
         auto: css`
         ${min.m`font-size: 	${() =>
-          Sugar(palette).size.font.m}px;`} ${max.s`font-size: 	${() =>
-          Sugar(palette).size.font.s}px;`} ${max.xs`font-size: 	${() =>
-          Sugar(palette).size.font.xs}px;`} ${min.xxl`font-size:	${() =>
-          Sugar(palette).size.font.l}px;`};
+    Sugar(palette).size.font.m}px;`} ${max.s`font-size: 	${() =>
+  Sugar(palette).size.font.s}px;`} ${max.xs`font-size: 	${() =>
+  Sugar(palette).size.font.xs}px;`} ${min.xxl`font-size:	${() =>
+  Sugar(palette).size.font.l}px;`};
       `
       },
       block: {
