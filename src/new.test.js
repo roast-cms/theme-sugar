@@ -1,4 +1,11 @@
-import { S, aliasSearch, convertUnit, printUnit } from "./new"
+import {
+  DEFAULT_PALETTE,
+  S,
+  aliasSearch,
+  convertUnit,
+  printUnit,
+  unitFactory
+} from "./new"
 
 describe("aliasSearch", () => {
   it("can find alias and return value", () => {
@@ -38,6 +45,38 @@ describe("printUnit", () => {
   })
 })
 
+describe("unitFactory", () => {
+  it("defaults to existing unit key's value in the theme when `wantedUnit` is set to `null`", () => {
+    expect(
+      unitFactory({
+        rules: DEFAULT_PALETTE.base,
+        palette: DEFAULT_PALETTE.base,
+        alias: "fontSize",
+        wantedUnit: null,
+        wantedFormat: "value"
+      })
+    ).toEqual(16)
+    expect(
+      unitFactory({
+        rules: DEFAULT_PALETTE.base,
+        palette: DEFAULT_PALETTE.base,
+        alias: "fontSize",
+        wantedUnit: null
+      })
+    ).toEqual(16)
+  })
+  it("defaults to existing unit key's value in the theme when `wantedUnit` not defined ", () => {
+    expect(
+      unitFactory({
+        rules: DEFAULT_PALETTE.base,
+        palette: DEFAULT_PALETTE.base,
+        alias: "fontSize",
+        wantedUnit: undefined
+      })
+    ).toEqual("16px")
+  })
+})
+
 describe("S().size", () => {
   it("returns medium size aliases in default em", () => {
     expect(S().size("m")).toEqual("1.25em")
@@ -54,6 +93,12 @@ describe("S().size", () => {
   })
   it("returns number value for medium size in em", () => {
     expect(S().size("m", "em", "value")).toEqual(1.25)
+  })
+})
+
+describe("S().base", () => {
+  it("returns line-height in em units by default", () => {
+    expect(S().base("lineHeight")).toEqual("1.15em")
   })
 })
 

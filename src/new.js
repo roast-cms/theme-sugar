@@ -1,37 +1,75 @@
 export const DEFAULT_UNIT = "em"
-export const DEFAULT_PALETTE_BASE = [
-  {
-    // NOTE: aliases["fontSize"] is required
-    aliases: ["fontSize", "font-size", "size", "pixels", "px", "unit", "base"],
-    value: 16,
-    unit: "px"
-  }
-]
-export const DEFAULT_PALETTE_SIZE = [
-  {
-    aliases: ["sm", "s", 10, "small"],
-    value: 10,
-    unit: "px"
-  },
-  {
-    aliases: ["m", "med", "md", "medium", 20],
-    value: 20,
-    unit: "px"
-  },
-  {
-    aliases: ["l", "lg", "large", 40],
-    value: 40,
-    unit: "px"
-  },
-  {
-    aliases: ["xl", "extra", "huge", "giant", "big", 80],
-    value: 80,
-    unit: "px"
-  }
-]
+export const DEFAULT_PALETTE = {
+  base: [
+    {
+      // NOTE: aliases["fontSize"] is required
+      // NOTE: value in pixels required
+      // NOTE: unit must be set to "px"
+      aliases: [
+        "fontSize",
+        "font-size",
+        "size",
+        "pixels",
+        "px",
+        "unit",
+        "base"
+      ],
+      value: 16,
+      unit: "px"
+    },
+    {
+      aliases: ["lineHeight", "line-height", "height", "line"],
+      value: 1.15,
+      unit: "em"
+    }
+  ],
+  size: [
+    {
+      aliases: ["sm", "s", 10, "small"],
+      value: 10,
+      unit: "px"
+    },
+    {
+      aliases: ["m", "med", "md", "medium", 20],
+      value: 20,
+      unit: "px"
+    },
+    {
+      aliases: ["l", "lg", "large", 40],
+      value: 40,
+      unit: "px"
+    },
+    {
+      aliases: ["xl", "extra", "huge", "giant", "big", 80],
+      value: 80,
+      unit: "px"
+    }
+  ]
+}
 
 export const S = (theme = {}) => {
-  const PALETTE = {
+  const rules = name =>
+    theme[name]
+      ? palette.options.extend
+        ? [...DEFAULT_PALETTE[name], ...theme[name]]
+        : theme[name]
+      : DEFAULT_PALETTE[name]
+
+  const map = function(
+    alias,
+    wantedUnit = palette.options.default.unit,
+    wantedFormat = "css"
+  ) {
+    return unitFactory({
+      palette,
+      rules: rules(this),
+      wantedUnit,
+      wantedFormat,
+      alias
+    })
+  }
+
+  const palette = {
     options: {
       default: {
         unit:
@@ -44,38 +82,14 @@ export const S = (theme = {}) => {
       extend:
         theme && theme.options && theme.options.extend === false ? false : true
     },
-    base: alias => {
-      const options = theme.base
-        ? PALETTE.options.extend
-          ? [...DEFAULT_PALETTE_BASE, ...theme.base]
-          : theme.base
-        : DEFAULT_PALETTE_BASE
-      return aliasSearch.call(options, alias)
-    },
+
     screen: {},
     font: {},
     color: {},
-    size: (
-      alias,
-      wantedUnit = PALETTE.options.default.unit,
-      wantedFormat = "css"
-    ) => {
-      const options = theme.size
-        ? PALETTE.options.extend
-          ? [...DEFAULT_PALETTE_SIZE, ...theme.size]
-          : theme.size
-        : DEFAULT_PALETTE_SIZE
-      const wantedOption = aliasSearch.call(options, alias)
-      const givenValue = wantedOption.value
-      const givenUnit = wantedOption.unit
-      if (!givenValue || !givenUnit) return
-      const wantedValue =
-        givenValue * convertUnit.apply(PALETTE, [givenUnit, wantedUnit])
-      const wanted = printUnit(wantedValue, wantedUnit, wantedFormat)
-      return wanted
-    }
+    base: map.bind("base"),
+    size: map.bind("size")
   }
-  return PALETTE
+  return palette
 }
 
 export const aliasSearch = function(alias) {
@@ -90,7 +104,7 @@ export const aliasSearch = function(alias) {
 
 export const convertUnit = function(from, to) {
   const matrix = {
-    em: this.base("fontSize").value,
+    em: this.base("fontSize", null),
     px: 1,
     pixels: 1
   }
@@ -101,4 +115,23 @@ export const printUnit = (value, unit = DEFAULT_UNIT, wantedFormat = "css") => {
   const print =
     wantedFormat === "css" ? value + (unit === "pixels" ? "px" : unit) : value
   return print
+}
+
+export const unitFactory = props => {
+  let unit
+  const { palette, rules, alias, wantedUnit, wantedFormat } = props
+
+  const wantedOption = aliasSearch.call(rules, alias)
+  const givenValue = wantedOption.value
+  const givenUnit = wantedOption.unit
+
+  if (!givenValue || !givenUnit) return
+  typeof wantedUnit === "undefined" ? (unit = givenUnit) : (unit = wantedUnit)
+
+  const unitRatio =
+    unit && wantedUnit ? convertUnit.apply(palette, [givenUnit, unit]) : 1
+  const wantedValue = givenValue * unitRatio
+  const wanted = printUnit(wantedValue, unit, wantedFormat)
+
+  return wanted
 }

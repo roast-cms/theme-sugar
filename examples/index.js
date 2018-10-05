@@ -9,24 +9,41 @@ import styled, { ThemeProvider } from "styled-components"
 import { render } from "react-dom"
 import React from "react"
 
+import { DEFAULT_PALETTE_BASE, S, unitFactory } from '../src/new';
 import { Sugar } from "../src/index"
-import { S, convertUnit } from "../src/new"
 
 const newTheme = {
   base: [
     {
       aliases: ["fontSize"],
-      value: 10,
+      value: 10
     }
   ],
   size: [{ aliases: ["x"], value: "11", unit: "em" }],
   options: {
     default: {
       unit: "px"
-    },
+    }
   }
 }
-console.log(S(newTheme).size("m"))
+// console.log(S(newTheme).size("m"))
+// console.log(unitFactory.call(
+//   { options: DEFAULT_PALETTE_BASE, PALETTE: DEFAULT_PALETTE_BASE },
+//   "fontSize",
+//   null
+// ));
+// console.log(unitFactory.call(
+//   { options: DEFAULT_PALETTE_BASE, PALETTE: DEFAULT_PALETTE_BASE },
+//   "fontSize"
+// ));
+
+
+unitFactory({
+  palette: DEFAULT_PALETTE_BASE,
+  options: DEFAULT_PALETTE_BASE,
+  alias: "fontSize"
+})
+
 //
 //
 //
