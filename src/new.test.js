@@ -1,5 +1,5 @@
 import {
-  DEFAULT_PALETTE,
+  PALETTE_PRESETS,
   S,
   aliasSearch,
   convertUnit,
@@ -58,8 +58,8 @@ describe("unitFactory", () => {
   it("defaults to existing unit key's value in the theme when `wantedUnit` is set to `null`", () => {
     expect(
       unitFactory({
-        rules: DEFAULT_PALETTE.base,
-        palette: DEFAULT_PALETTE.base,
+        rules: PALETTE_PRESETS.base,
+        palette: PALETTE_PRESETS.base,
         alias: "fontSize",
         wantedUnit: null,
         wantedFormat: "value"
@@ -67,8 +67,8 @@ describe("unitFactory", () => {
     ).toEqual(16)
     expect(
       unitFactory({
-        rules: DEFAULT_PALETTE.base,
-        palette: DEFAULT_PALETTE.base,
+        rules: PALETTE_PRESETS.base,
+        palette: PALETTE_PRESETS.base,
         alias: "fontSize",
         wantedUnit: null
       })
@@ -77,8 +77,8 @@ describe("unitFactory", () => {
   it("defaults to existing unit key's value in the theme when `wantedUnit` not defined ", () => {
     expect(
       unitFactory({
-        rules: DEFAULT_PALETTE.base,
-        palette: DEFAULT_PALETTE.base,
+        rules: PALETTE_PRESETS.base,
+        palette: PALETTE_PRESETS.base,
         alias: "fontSize",
         wantedUnit: undefined
       })
@@ -115,6 +115,18 @@ describe("S().base", () => {
 })
 
 describe("S(theme)", () => {
+  it("returns font-size in px units by default for custom base theme", () => {
+    const newTheme = {
+      base: [
+        {
+          aliases: [12342, 123, "fff"],
+          value: 10,
+          unit: " random "
+        }
+      ]
+    }
+    expect(S(newTheme).base("fontSize")).toEqual("10px")
+  })
   it("works without any theme being passed as a parameter", () => {
     expect(S().size(20)).toEqual("1.25em")
   })

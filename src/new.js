@@ -1,21 +1,20 @@
-export const DEFAULT_UNIT = "em"
+export const COMMON_UNIT = "em"
+export const BASE_UNIT = "px"
 export const FONTSIZE_ALIASES = [
   "fontSize",
   "font-size",
   "size",
-  "pixels",
-  "px",
   "unit",
   "base"
 ]
-export const DEFAULT_PALETTE = {
+export const PALETTE_PRESETS = {
   base: [
     {
-      // NOTE: value in pixels required
-      // NOTE: unit must be set to "px"
+      // NOTE: value is always in pixels
+      // NOTE: font aliases are immutable
       aliases: FONTSIZE_ALIASES,
       value: 16,
-      unit: "px"
+      unit: BASE_UNIT
     },
     {
       aliases: ["lineHeight", "line-height", "height", "line"],
@@ -52,9 +51,13 @@ export const DEFAULT_PALETTE = {
   ]
 }
 
-export const S = (theme = {}) => {
-  const rules = name => (theme[name] ? theme[name] : DEFAULT_PALETTE[name])
-
+export const S = (userTheme = {}) => {
+  let theme = userTheme
+  if (theme.base && theme.base[0]) {
+    theme.base[0].aliases = FONTSIZE_ALIASES
+    theme.base[0].unit = BASE_UNIT
+  }
+  const rules = name => (theme[name] ? theme[name] : PALETTE_PRESETS[name])
   const map = function(
     alias,
     wantedUnit = palette.options.default.unit,
@@ -77,7 +80,7 @@ export const S = (theme = {}) => {
             theme.options &&
             theme.options.default &&
             theme.options.default.unit) ||
-          DEFAULT_UNIT
+          COMMON_UNIT
       }
     },
     screen: {},
@@ -112,7 +115,7 @@ export const convertUnit = function(from, to) {
   return matrix[from] / matrix[to]
 }
 
-export const printUnit = (value, unit = DEFAULT_UNIT, wantedFormat = "css") => {
+export const printUnit = (value, unit = COMMON_UNIT, wantedFormat = "css") => {
   const print =
     wantedFormat === "css" ? value + (unit === "pixels" ? "px" : unit) : value
   return print
@@ -122,17 +125,35 @@ export const unitFactory = props => {
   let unit
   const { palette, rules, alias, wantedUnit, wantedFormat } = props
 
-  const wantedOption = aliasSearch.call(rules, alias)
-  const givenValue = wantedOption.value
-  const givenUnit = wantedOption.unit
+  const wantedRule = aliasSearch.call(rules, alias)
+  const givenValue = wantedRule.value
+  const givenUnit = wantedRule.unit
+  if (!givenValue) return
 
-  if (!givenValue || !givenUnit) return
+  if (
+    wantedRule.aliases === FONTSIZE_ALIASES &&
+    typeof wantedUnit === "undefined"
+  ) {
+    unit = BASE_UNIT
+    // console.log(wantedRule)
+    // console.log(unit)
+    // console.log(givenValue)
+    // console.log(printUnit(givenValue * 1, unit, wantedFormat))
+  }
   typeof wantedUnit === "undefined" ? (unit = givenUnit) : (unit = wantedUnit)
 
   const unitRatio =
     unit && wantedUnit ? convertUnit.apply(palette, [givenUnit, unit]) : 1
   const wantedValue = givenValue * unitRatio
   const wanted = printUnit(wantedValue, unit, wantedFormat)
+  //
+  // if (
+  //   wantedRule.aliases === FONTSIZE_ALIASES &&
+  //   typeof wantedUnit === "undefined"
+  // ) {
+  //   unit = BASE_UNIT
+  //   console.log(wanted)
+  // }
 
   return wanted
 }
