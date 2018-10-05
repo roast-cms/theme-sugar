@@ -14,6 +14,15 @@ describe("aliasSearch", () => {
       aliasSearch.call([search, {}, { aliases: ["bb", 7], value: 11 }], "a")
     ).toEqual(search)
   })
+  it("can find alias from array and return value", () => {
+    const search = { aliases: [1, "a"], value: 1 }
+    expect(
+      aliasSearch.call(
+        [search, {}, { aliases: ["bb", 7], value: 11 }],
+        ["a", "aaa", "lll"]
+      )
+    ).toEqual(search)
+  })
 })
 
 describe("convertUnit", () => {
@@ -100,13 +109,16 @@ describe("S().base", () => {
   it("returns line-height in em units by default", () => {
     expect(S().base("lineHeight")).toEqual("1.15em")
   })
+  it("returns font-size in px units by default", () => {
+    expect(S().base("fontSize")).toEqual("16px")
+  })
 })
 
 describe("S(theme)", () => {
   it("works without any theme being passed as a parameter", () => {
     expect(S().size(20)).toEqual("1.25em")
   })
-  it("can accept a theme that replaces current theme defaults", () => {
+  it("can accept a theme that augments current theme defaults", () => {
     const newTheme = {
       base: [
         {
@@ -119,28 +131,10 @@ describe("S(theme)", () => {
       options: {
         default: {
           unit: "px"
-        },
-        extend: false // <--
+        }
       }
     }
     expect(S(newTheme).size("x")).toEqual("110px")
     expect(S(newTheme).size("m")).toBeUndefined()
-  })
-  it("can accept a theme that extendes current theme defaults", () => {
-    const newTheme = {
-      base: [
-        {
-          aliases: ["fontSize"],
-          value: 10,
-          unit: "px"
-        }
-      ],
-      size: [{ aliases: ["x"], value: "11", unit: "em" }],
-      options: {
-        default: {}
-      }
-    }
-    expect(S(newTheme).size("x")).toEqual("11em")
-    expect(S(newTheme).size("m")).toEqual("2em")
   })
 })

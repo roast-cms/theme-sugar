@@ -1,25 +1,30 @@
 export const DEFAULT_UNIT = "em"
+export const FONTSIZE_ALIASES = [
+  "fontSize",
+  "font-size",
+  "size",
+  "pixels",
+  "px",
+  "unit",
+  "base"
+]
 export const DEFAULT_PALETTE = {
   base: [
     {
-      // NOTE: aliases["fontSize"] is required
       // NOTE: value in pixels required
       // NOTE: unit must be set to "px"
-      aliases: [
-        "fontSize",
-        "font-size",
-        "size",
-        "pixels",
-        "px",
-        "unit",
-        "base"
-      ],
+      aliases: FONTSIZE_ALIASES,
       value: 16,
       unit: "px"
     },
     {
       aliases: ["lineHeight", "line-height", "height", "line"],
       value: 1.15,
+      unit: "em"
+    },
+    {
+      aliases: ["letterSpacing", "spacing", "letter-spacing"],
+      value: 1.025,
       unit: "em"
     }
   ],
@@ -48,12 +53,7 @@ export const DEFAULT_PALETTE = {
 }
 
 export const S = (theme = {}) => {
-  const rules = name =>
-    theme[name]
-      ? palette.options.extend
-        ? [...DEFAULT_PALETTE[name], ...theme[name]]
-        : theme[name]
-      : DEFAULT_PALETTE[name]
+  const rules = name => (theme[name] ? theme[name] : DEFAULT_PALETTE[name])
 
   const map = function(
     alias,
@@ -78,11 +78,8 @@ export const S = (theme = {}) => {
             theme.options.default &&
             theme.options.default.unit) ||
           DEFAULT_UNIT
-      },
-      extend:
-        theme && theme.options && theme.options.extend === false ? false : true
+      }
     },
-
     screen: {},
     font: {},
     color: {},
@@ -94,17 +91,21 @@ export const S = (theme = {}) => {
 
 export const aliasSearch = function(alias) {
   let search = {}
-  this.forEach((v, index) => {
-    if (v && v.aliases && v.aliases.indexOf(alias) > -1) {
-      search = this[index]
-    }
-  })
+  const iterate = thing =>
+    this.forEach((v, index) => {
+      if (v && v.aliases && v.aliases.indexOf(thing) > -1) {
+        search = this[index]
+      }
+    })
+  Object.prototype.toString.call(alias) === "[object Array]"
+    ? alias.forEach(string => iterate(string))
+    : iterate(alias)
   return search
 }
 
 export const convertUnit = function(from, to) {
   const matrix = {
-    em: this.base("fontSize", null),
+    em: this.base(FONTSIZE_ALIASES, null),
     px: 1,
     pixels: 1
   }

@@ -9,7 +9,7 @@ import styled, { ThemeProvider } from "styled-components"
 import { render } from "react-dom"
 import React from "react"
 
-import { DEFAULT_PALETTE_BASE, S, unitFactory } from '../src/new';
+import { DEFAULT_PALETTE_BASE, S, unitFactory } from "../src/new"
 import { Sugar } from "../src/index"
 
 const newTheme = {
@@ -36,7 +36,6 @@ const newTheme = {
 //   { options: DEFAULT_PALETTE_BASE, PALETTE: DEFAULT_PALETTE_BASE },
 //   "fontSize"
 // ));
-
 
 unitFactory({
   palette: DEFAULT_PALETTE_BASE,
