@@ -9,23 +9,10 @@ import styled, { ThemeProvider } from "styled-components"
 import { render } from "react-dom"
 import React from "react"
 
-import { DEFAULT_PALETTE_BASE, S, unitFactory } from "../src/new"
+import { S } from '../src/new';
 import { Sugar } from "../src/index"
 
-const newTheme = {
-  base: [
-    {
-      aliases: ["fontSize"],
-      value: 10
-    }
-  ],
-  size: [{ aliases: ["x"], value: "11", unit: "em" }],
-  options: {
-    default: {
-      unit: "px"
-    }
-  }
-}
+
 // console.log(S(newTheme).size("m"))
 // console.log(unitFactory.call(
 //   { options: DEFAULT_PALETTE_BASE, PALETTE: DEFAULT_PALETTE_BASE },
@@ -37,16 +24,36 @@ const newTheme = {
 //   "fontSize"
 // ));
 
-unitFactory({
-  palette: DEFAULT_PALETTE_BASE,
-  options: DEFAULT_PALETTE_BASE,
-  alias: "fontSize"
-})
+// unitFactory({
+//   schemas: DEFAULT_PRESETS.base,
+//   palette: DEFAULT_PRESETS.base,
+//   alias: "fontSize"
+// })
+// console.log(S().size("m"))
+//
+//
+//
 
-//
-//
-//
-//
+
+
+const newTheme = {
+  base: [
+    {
+      aliases: [12342, 123, "fff"],
+      value: 12,
+      unit: " random "
+    },
+    {
+      aliases: ["222"],
+      value: 12,
+      unit: "em"
+    }
+  ]
+}
+console.log(S(newTheme).base("fontSize"))
+
+
+
 const Main = styled.div`
   & > * ::selection {
     background: ${props => props.theme.color.highlight()};

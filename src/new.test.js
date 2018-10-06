@@ -1,11 +1,17 @@
 import {
-  PALETTE_PRESETS,
+  DEFAULT_OPTIONS,
+  DEFAULT_PALETTE,
   S,
   aliasSearch,
   convertUnit,
-  printUnit,
+  printRule,
   unitFactory
 } from "./new"
+
+const mockPalette = {
+  ...DEFAULT_PALETTE.size,
+  options: { default: DEFAULT_OPTIONS }
+}
 
 describe("aliasSearch", () => {
   it("can find alias and return value", () => {
@@ -36,53 +42,47 @@ describe("convertUnit", () => {
   it("returns ratio of 16/1 when converting from em to px", () => {
     expect(convertUnit.apply(S(), ["em", "px"])).toEqual(16 / 1)
   })
+  it("is non-discriminante between px and pixels", () => {
+    expect(convertUnit.apply(S(), ["px", "pixels"])).toEqual(1)
+    expect(convertUnit.apply(S(), ["pixels", "px"])).toEqual(1)
+    expect(convertUnit.apply(S(), ["pixels", "pixels"])).toEqual(1)
+    expect(convertUnit.apply(S(), ["px", "px"])).toEqual(1)
+  })
 })
 
-describe("printUnit", () => {
+describe("printRule", () => {
   it("returns number value", () => {
-    expect(printUnit(10, "px", "value")).toEqual(10)
+    expect(printRule(10, "px", "value")).toEqual(10)
   })
-  it("returns em string by default", () => {
-    expect(printUnit(10)).toEqual("10em")
-  })
+
   it("returns em string", () => {
-    expect(printUnit(10, "em")).toEqual("10em")
+    expect(printRule(10, "em")).toEqual("10em")
   })
   it("returns px string", () => {
-    expect(printUnit(10, "px")).toEqual("10px")
-    expect(printUnit(10, "pixels")).toEqual("10px")
+    expect(printRule(10, "px")).toEqual("10px")
+    expect(printRule(10, "pixels")).toEqual("10px")
   })
 })
 
 describe("unitFactory", () => {
-  it("defaults to existing unit key's value in the theme when `wantedUnit` is set to `null`", () => {
+  it("defaults to existing shema value when `unit` is set to `null`", () => {
     expect(
       unitFactory({
-        rules: PALETTE_PRESETS.base,
-        palette: PALETTE_PRESETS.base,
-        alias: "fontSize",
-        wantedUnit: null,
-        wantedFormat: "value"
+        preset: DEFAULT_PALETTE.size,
+        palette: mockPalette,
+        alias: "l",
+        unit: null,
+        format: "value"
       })
-    ).toEqual(16)
+    ).toEqual(40)
     expect(
       unitFactory({
-        rules: PALETTE_PRESETS.base,
-        palette: PALETTE_PRESETS.base,
-        alias: "fontSize",
-        wantedUnit: null
+        preset: DEFAULT_PALETTE.size,
+        palette: mockPalette,
+        alias: "l",
+        unit: null
       })
-    ).toEqual(16)
-  })
-  it("defaults to existing unit key's value in the theme when `wantedUnit` not defined ", () => {
-    expect(
-      unitFactory({
-        rules: PALETTE_PRESETS.base,
-        palette: PALETTE_PRESETS.base,
-        alias: "fontSize",
-        wantedUnit: undefined
-      })
-    ).toEqual("16px")
+    ).toEqual("40px")
   })
 })
 
@@ -104,45 +104,17 @@ describe("S().size", () => {
     expect(S().size("m", "em", "value")).toEqual(1.25)
   })
 })
-
-describe("S().base", () => {
-  it("returns line-height in em units by default", () => {
-    expect(S().base("lineHeight")).toEqual("1.15em")
-  })
-  it("returns font-size in px units by default", () => {
-    expect(S().base("fontSize")).toEqual("16px")
-  })
-})
-
 describe("S(theme)", () => {
-  it("returns font-size in px units by default for custom base theme", () => {
-    const newTheme = {
-      base: [
-        {
-          aliases: [12342, 123, "fff"],
-          value: 10,
-          unit: " random "
-        }
-      ]
-    }
-    expect(S(newTheme).base("fontSize")).toEqual("10px")
-  })
   it("works without any theme being passed as a parameter", () => {
     expect(S().size(20)).toEqual("1.25em")
   })
   it("can accept a theme that augments current theme defaults", () => {
     const newTheme = {
-      base: [
-        {
-          aliases: ["fontSize"],
-          value: 10,
-          unit: "px"
-        }
-      ],
-      size: [{ aliases: ["x"], value: "11", unit: "em" }],
+      size: [{ aliases: ["x"], value: 11, unit: "em" }],
       options: {
         default: {
-          unit: "px"
+          unit: "px",
+          em: 10
         }
       }
     }

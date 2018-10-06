@@ -1,32 +1,6 @@
-export const COMMON_UNIT = "em"
-export const BASE_UNIT = "px"
-export const FONTSIZE_ALIASES = [
-  "fontSize",
-  "font-size",
-  "size",
-  "unit",
-  "base"
-]
-export const PALETTE_PRESETS = {
-  base: [
-    {
-      // NOTE: value is always in pixels
-      // NOTE: font aliases are immutable
-      aliases: FONTSIZE_ALIASES,
-      value: 16,
-      unit: BASE_UNIT
-    },
-    {
-      aliases: ["lineHeight", "line-height", "height", "line"],
-      value: 1.15,
-      unit: "em"
-    },
-    {
-      aliases: ["letterSpacing", "spacing", "letter-spacing"],
-      value: 1.025,
-      unit: "em"
-    }
-  ],
+export const DEFAULT_UNIT = "em"
+
+export const DEFAULT_PALETTE = {
   size: [
     {
       aliases: ["sm", "s", 10, "small"],
@@ -50,45 +24,36 @@ export const PALETTE_PRESETS = {
     }
   ]
 }
+export const DEFAULT_OPTIONS = {
+  unit: DEFAULT_UNIT,
+  em: 16
+}
 
-export const S = (userTheme = {}) => {
-  let theme = userTheme
-  if (theme.base && theme.base[0]) {
-    theme.base[0].aliases = FONTSIZE_ALIASES
-    theme.base[0].unit = BASE_UNIT
-  }
-  const rules = name => (theme[name] ? theme[name] : PALETTE_PRESETS[name])
-  const map = function(
-    alias,
-    wantedUnit = palette.options.default.unit,
-    wantedFormat = "css"
-  ) {
+export const S = (userPalette = {}) => {
+  const getRule = function(alias, unit, format = "css") {
     return unitFactory({
       palette,
-      rules: rules(this),
-      wantedUnit,
-      wantedFormat,
+      preset: userPalette[this] || DEFAULT_PALETTE[this],
+      unit,
+      format,
       alias
     })
   }
 
+  const userOptions = userPalette.options || {}
   const palette = {
     options: {
       default: {
-        unit:
-          (theme &&
-            theme.options &&
-            theme.options.default &&
-            theme.options.default.unit) ||
-          COMMON_UNIT
+        ...DEFAULT_OPTIONS,
+        ...userOptions.default
       }
     },
     screen: {},
     font: {},
     color: {},
-    base: map.bind("base"),
-    size: map.bind("size")
+    size: getRule.bind("size")
   }
+
   return palette
 }
 
@@ -108,52 +73,32 @@ export const aliasSearch = function(alias) {
 
 export const convertUnit = function(from, to) {
   const matrix = {
-    em: this.base(FONTSIZE_ALIASES, null),
+    em: this.options.default.em,
     px: 1,
     pixels: 1
   }
   return matrix[from] / matrix[to]
 }
 
-export const printUnit = (value, unit = COMMON_UNIT, wantedFormat = "css") => {
+export const printRule = (value, unit, format = "css") => {
   const print =
-    wantedFormat === "css" ? value + (unit === "pixels" ? "px" : unit) : value
+    format === "css" ? value + (unit === "pixels" ? "px" : unit) : value
   return print
 }
 
 export const unitFactory = props => {
-  let unit
-  const { palette, rules, alias, wantedUnit, wantedFormat } = props
+  let unitRatio
+  const { palette, preset, alias, unit, format } = props
+  const schema = aliasSearch.call(preset, alias)
+  if (!schema.value) return
 
-  const wantedRule = aliasSearch.call(rules, alias)
-  const givenValue = wantedRule.value
-  const givenUnit = wantedRule.unit
-  if (!givenValue) return
-
-  if (
-    wantedRule.aliases === FONTSIZE_ALIASES &&
-    typeof wantedUnit === "undefined"
-  ) {
-    unit = BASE_UNIT
-    // console.log(wantedRule)
-    // console.log(unit)
-    // console.log(givenValue)
-    // console.log(printUnit(givenValue * 1, unit, wantedFormat))
-  }
-  typeof wantedUnit === "undefined" ? (unit = givenUnit) : (unit = wantedUnit)
-
-  const unitRatio =
-    unit && wantedUnit ? convertUnit.apply(palette, [givenUnit, unit]) : 1
-  const wantedValue = givenValue * unitRatio
-  const wanted = printUnit(wantedValue, unit, wantedFormat)
-  //
-  // if (
-  //   wantedRule.aliases === FONTSIZE_ALIASES &&
-  //   typeof wantedUnit === "undefined"
-  // ) {
-  //   unit = BASE_UNIT
-  //   console.log(wanted)
-  // }
-
-  return wanted
+  const _unit =
+    unit === null
+      ? schema.unit
+      : typeof unit === "undefined"
+        ? palette.options.default.unit
+        : unit
+  unitRatio = convertUnit.apply(palette, [schema.unit, _unit])
+  const value = schema.value * unitRatio
+  return printRule(value, _unit, format)
 }
