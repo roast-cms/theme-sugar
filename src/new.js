@@ -1,33 +1,4 @@
-export const DEFAULT_UNIT = "em"
-
-export const DEFAULT_PALETTE = {
-  size: [
-    {
-      aliases: ["sm", "s", 10, "small"],
-      value: 10,
-      unit: "px"
-    },
-    {
-      aliases: ["m", "med", "md", "medium", 20],
-      value: 20,
-      unit: "px"
-    },
-    {
-      aliases: ["l", "lg", "large", 40],
-      value: 40,
-      unit: "px"
-    },
-    {
-      aliases: ["xl", "extra", "huge", "giant", "big", 80],
-      value: 80,
-      unit: "px"
-    }
-  ]
-}
-export const DEFAULT_OPTIONS = {
-  unit: DEFAULT_UNIT,
-  em: 16
-}
+import { DEFAULT_OPTIONS, DEFAULT_PALETTE } from "./constants"
 
 export const S = (userPalette = {}) => {
   const getRule = function(alias, unit, format = "css") {
@@ -49,7 +20,7 @@ export const S = (userPalette = {}) => {
       }
     },
     screen: {},
-    font: {},
+    text: getRule.bind("text"),
     color: {},
     size: getRule.bind("size")
   }

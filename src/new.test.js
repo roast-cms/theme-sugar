@@ -1,12 +1,5 @@
-import {
-  DEFAULT_OPTIONS,
-  DEFAULT_PALETTE,
-  S,
-  aliasSearch,
-  convertUnit,
-  printRule,
-  unitFactory
-} from "./new"
+import { DEFAULT_OPTIONS, DEFAULT_PALETTE } from "./constants"
+import { S, aliasSearch, convertUnit, printRule, unitFactory } from "./new"
 
 const mockPalette = {
   ...DEFAULT_PALETTE.size,
@@ -74,7 +67,7 @@ describe("unitFactory", () => {
         unit: null,
         format: "value"
       })
-    ).toEqual(40)
+    ).toEqual(1.5)
     expect(
       unitFactory({
         preset: DEFAULT_PALETTE.size,
@@ -82,35 +75,20 @@ describe("unitFactory", () => {
         alias: "l",
         unit: null
       })
-    ).toEqual("40px")
+    ).toEqual("1.5em")
   })
 })
 
-describe("S().size", () => {
-  it("returns medium size aliases in default em", () => {
-    expect(S().size("m")).toEqual("1.25em")
-    expect(S().size("med")).toEqual("1.25em")
-    expect(S().size("md")).toEqual("1.25em")
-    expect(S().size("medium")).toEqual("1.25em")
-    expect(S().size(20)).toEqual("1.25em")
-  })
-  it("returns medium size in px", () => {
-    expect(S().size("m", "px")).toEqual("20px")
-  })
-  it("returns number value for medium size in px", () => {
-    expect(S().size("m", "px", "value")).toEqual(20)
-  })
-  it("returns number value for medium size in em", () => {
-    expect(S().size("m", "em", "value")).toEqual(1.25)
-  })
-})
 describe("S(theme)", () => {
   it("works without any theme being passed as a parameter", () => {
-    expect(S().size(20)).toEqual("1.25em")
+    expect(S().size(0.85)).toEqual("0.85em")
   })
   it("can accept a theme that augments current theme defaults", () => {
     const newTheme = {
-      size: [{ aliases: ["x"], value: 11, unit: "em" }],
+      size: [
+        { aliases: ["x"], value: 11, unit: "em" },
+        { aliases: ["z"], value: 9, unit: "px" }
+      ],
       options: {
         default: {
           unit: "px",
@@ -119,6 +97,39 @@ describe("S(theme)", () => {
       }
     }
     expect(S(newTheme).size("x")).toEqual("110px")
+    expect(S(newTheme).size("z")).toEqual("9px")
     expect(S(newTheme).size("m")).toBeUndefined()
+  })
+})
+
+describe("S().size", () => {
+  it("returns medium size aliases in default em", () => {
+    expect(S().size("m")).toEqual("1em")
+    expect(S().size("med")).toEqual("1em")
+    expect(S().size("md")).toEqual("1em")
+    expect(S().size("medium")).toEqual("1em")
+    expect(S().size(1)).toEqual("1em")
+  })
+  it("returns medium size in px", () => {
+    expect(S().size("m", "px")).toEqual("16px")
+  })
+  it("returns number value for medium size in px", () => {
+    expect(S().size("m", "px", "value")).toEqual(16)
+  })
+  it("returns number value for medium size in em", () => {
+    expect(S().size("m", "em", "value")).toEqual(1)
+  })
+})
+
+describe("S().text", () => {
+  it("returns line-height in em", () => {
+    expect(S().text("line-height")).toEqual("1.75em")
+  })
+  it("returns line-height value when requested", () => {
+    expect(S().text("lineHeight", "em", "value")).toEqual(1.75)
+    expect(S().text("lineHeight", null, "value")).toEqual(1.75)
+  })
+  it("returns letter-spacing in em", () => {
+    expect(S().text("letter-spacing")).toEqual("1.025em")
   })
 })
