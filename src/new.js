@@ -21,7 +21,7 @@ export const S = (userPalette = {}) => {
     },
     screen: {},
     text: getRule.bind("text"),
-    color: {},
+    color: getRule.bind("color"),
     size: getRule.bind("size")
   }
 

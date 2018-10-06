@@ -133,3 +133,9 @@ describe("S().text", () => {
     expect(S().text("letter-spacing")).toEqual("1.025em")
   })
 })
+
+describe("S().color", () => {
+  it("can return color by alias", () => {
+    expect(S().color("red")).toEqual("#f00")
+  })
+})
