@@ -154,7 +154,6 @@ const headerFont = css`
 
 // css
 
-
 const Main = styled.div`
   ${font}
   margin: 0 auto;

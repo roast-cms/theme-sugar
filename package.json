@@ -1,9 +1,9 @@
 {
-  "name": "@roast-cms/react-sugar-styled",
-  "version": "1.0.4",
-  "description": "Customizable and extendable theming dictionary for Styled Components.",
+  "name": "@roast-cms/theme-sugar",
+  "version": "1.0.0",
+  "description": "Customizeable, extendable theming engine for JavaScript CSS processors.",
   "main": "dist/index.js",
-  "repository": "https://github.com/roast-cms/react-sugar-styled.git",
+  "repository": "https://github.com/roast-cms/theme-sugar.git",
   "author": "dmitrizzle <d@analog.cafe>",
   "license": "MPL-2.0",
   "private": false,
@@ -32,9 +32,6 @@
     "url-loader": "^1.0.1",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1"
-  },
-  "peerDependencies": {
-    "styled-components": "^3.2.3"
   },
   "scripts": {
     "start": "webpack-dev-server",
