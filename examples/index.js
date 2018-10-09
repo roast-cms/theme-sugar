@@ -1,5 +1,3 @@
-//
-// tools
 import "typeface-indie-flower"
 import "typeface-lobster-two"
 import "typeface-yanone-kaffeesatz"
@@ -8,6 +6,8 @@ import styled, { ThemeProvider, css } from "styled-components"
 
 import { render } from "react-dom"
 import React from "react"
+
+// theming
 
 import { S } from "../src/"
 
@@ -131,6 +131,8 @@ const theme = {
   }
 }
 
+// helpers
+
 const hugeScreen = (...args) => css`
   @media (min-width: ${props => props.theme.media("huge", null)}) {
     ${css(...args)};
@@ -149,6 +151,10 @@ const headerFont = css`
   font-family: ${props => props.theme.text("heading")};
   font-size: ${props => props.theme.size(2)};
 `
+
+// css
+
+
 const Main = styled.div`
   ${font}
   margin: 0 auto;
@@ -192,6 +198,8 @@ const BrandedFade = styled(Branded)`
 const SpecialFont = styled.span`
   font-family: ${props => props.theme.text("special")};
 `
+
+// render
 
 render(
   <div>
