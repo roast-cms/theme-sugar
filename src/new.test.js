@@ -8,16 +8,16 @@ const mockPalette = {
 
 describe("aliasSearch", () => {
   it("can find alias and return value", () => {
-    const search = { aliases: [1, "a"], value: 1 }
+    const search = { find: [1, "a"], value: 1 }
     expect(
-      aliasSearch.call([search, {}, { aliases: ["bb", 7], value: 11 }], "a")
+      aliasSearch.call([search, {}, { find: ["bb", 7], value: 11 }], "a")
     ).toEqual(search)
   })
   it("can find alias from array and return value", () => {
-    const search = { aliases: [1, "a"], value: 1 }
+    const search = { find: [1, "a"], value: 1 }
     expect(
       aliasSearch.call(
-        [search, {}, { aliases: ["bb", 7], value: 11 }],
+        [search, {}, { find: ["bb", 7], value: 11 }],
         ["a", "aaa", "lll"]
       )
     ).toEqual(search)
@@ -86,8 +86,8 @@ describe("S(theme)", () => {
   it("can accept a theme that augments current theme defaults", () => {
     const newTheme = {
       size: [
-        { aliases: ["x"], value: 11, unit: "em" },
-        { aliases: ["z"], value: 9, unit: "px" }
+        { find: ["x"], value: 11, unit: "em" },
+        { find: ["z"], value: 9, unit: "px" }
       ],
       options: {
         default: {
@@ -103,7 +103,7 @@ describe("S(theme)", () => {
 })
 
 describe("S().size", () => {
-  it("returns medium size aliases in default em", () => {
+  it("returns medium size find in default em", () => {
     expect(S().size("m")).toEqual("1em")
     expect(S().size("med")).toEqual("1em")
     expect(S().size("md")).toEqual("1em")
@@ -132,6 +132,9 @@ describe("S().text", () => {
   it("returns letter-spacing in em", () => {
     expect(S().text("letter-spacing")).toEqual("1.025em")
   })
+  it("returns font name", () => {
+    expect(S().text("font")).toEqual("Arial, sans-serif")
+  })
 })
 
 describe("S().color", () => {
@@ -143,5 +146,11 @@ describe("S().color", () => {
   })
   it("can convert color to hex and return", () => {
     expect(S().color("blue", "hex")).toEqual("#0000ff")
+  })
+})
+
+describe("S().media", () => {
+  it("can return media query by alias", () => {
+    expect(S().media("small", "px")).toEqual("320px")
   })
 })

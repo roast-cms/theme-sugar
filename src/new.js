@@ -21,7 +21,7 @@ export const S = (userPalette = {}) => {
         ...userOptions.default
       }
     },
-    screen: {},
+    media: getRule.bind("media"),
     text: getRule.bind("text"),
     color: getRule.bind("color"),
     size: getRule.bind("size")
@@ -34,7 +34,7 @@ export const aliasSearch = function(alias) {
   let search = {}
   const iterate = thing =>
     this.forEach((v, index) => {
-      if (v && v.aliases && v.aliases.indexOf(thing) > -1) {
+      if (v && v.find && v.find.indexOf(thing) > -1) {
         search = this[index]
       }
     })
@@ -76,21 +76,26 @@ export const unitFactory = props => {
   const { palette, preset, alias, unit, format } = props
   const schema = aliasSearch.call(preset, alias)
   if (!schema.value) return
+  // named values, like font-name
+  if (("" + schema.unit).includes("name")) {
+    return schema.value
+  }
+  // color
   if (
     ("" + schema.value).includes("#") ||
     ("" + schema.value).includes("rgb")
   ) {
     _unit = unit ? unit : schema.unit
     return convertColor(schema.unit, _unit, schema.value)
-  } else {
-    _unit =
-      unit === null
-        ? schema.unit
-        : typeof unit === "undefined"
-          ? palette.options.default.unit
-          : unit
-    unitRatio = convertUnit.apply(palette, [schema.unit, _unit])
-    value = schema.value * unitRatio
-    return printRule(value, _unit, format)
   }
+  // measurement units
+  _unit =
+    unit === null
+      ? schema.unit
+      : typeof unit === "undefined"
+        ? palette.options.default.unit
+        : unit
+  unitRatio = convertUnit.apply(palette, [schema.unit, _unit])
+  value = schema.value * unitRatio
+  return printRule(value, _unit, format)
 }
