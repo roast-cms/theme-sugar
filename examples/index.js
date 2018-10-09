@@ -9,8 +9,7 @@ import styled, { ThemeProvider, css } from "styled-components"
 import { render } from "react-dom"
 import React from "react"
 
-import { S } from "../src/new"
-import { Sugar } from "../src/index"
+import { S } from "../src/"
 
 const theme = {
   color: [
@@ -60,7 +59,7 @@ const theme = {
       find: ["letter-spacing", "letters", "lspacing", "letterSpacing"],
       value: 1.025,
       unit: "em"
-    },
+    }
   ],
   size: [
     {
@@ -69,7 +68,14 @@ const theme = {
       unit: "px"
     },
     {
-      find: ["short-column", "med-col", "medium-column", "column-m", "c-m", 700],
+      find: [
+        "short-column",
+        "med-col",
+        "medium-column",
+        "column-m",
+        "c-m",
+        700
+      ],
       value: 700,
       unit: "px"
     },
@@ -89,7 +95,18 @@ const theme = {
       unit: "px"
     },
     {
-      find: ["standard", "base", "main", "text", "font", "border-radius", "borderRadius", "radius", "sm", 1],
+      find: [
+        "standard",
+        "base",
+        "main",
+        "text",
+        "font",
+        "border-radius",
+        "borderRadius",
+        "radius",
+        "sm",
+        1
+      ],
       value: 1,
       unit: "em"
     },
@@ -115,8 +132,8 @@ const theme = {
 }
 
 const hugeScreen = (...args) => css`
-  @media (min-width: ${props => props.theme.media("huge", null)}){
-    ${css(...args)}
+  @media (min-width: ${props => props.theme.media("huge", null)}) {
+    ${css(...args)};
   }
 `
 
@@ -141,7 +158,9 @@ const Main = styled.div`
   `}
 
   max-width: ${props => props.theme.size("short-column")};
-  padding: ${props => props.theme.size("padding", null, "value") * 2}em ${props => props.theme.size("padding")};
+  padding: ${props =>
+    props.theme.size("padding", null, "value") * 2}em ${props =>
+  props.theme.size("padding")};
 
   & > * ::selection {
     background: ${props => props.theme.color("highlight")};
@@ -149,26 +168,25 @@ const Main = styled.div`
   }
 `
 const Article = styled.article`
-  background: ${props=> props.theme.color("background")};
+  background: ${props => props.theme.color("background")};
   padding: ${props => props.theme.size("padding")};
   border-radius: ${props => props.theme.size("borderRadius")};
-  border: ${props => props.theme.size("border")} solid ${props => props.theme.color("highlight")};
-
+  border: ${props => props.theme.size("border")} solid
+    ${props => props.theme.color("highlight")};
 `
 const Title = styled.h1`
-  ${headerFont}
-  hyphens: auto;
+  ${headerFont} hyphens: auto;
 `
 const Subtitle = styled.h2`
   ${headerFont}
   font-size: ${props => props.theme.size("med")}
 `
 const Branded = styled.strong`
-  color: ${props => props.theme.color("red")}
+  color: ${props => props.theme.color("red")};
 `
 const BrandedFade = styled(Branded)`
   color: ${props => props.theme.color("red")};
-  opacity: .5;
+  opacity: 0.5;
   font-size: ${props => props.theme.size("smaller")};
 `
 const SpecialFont = styled.span`
@@ -177,9 +195,7 @@ const SpecialFont = styled.span`
 
 render(
   <div>
-    <ThemeProvider
-      theme={S(theme)}
-    >
+    <ThemeProvider theme={S(theme)}>
       <Main>
         <Article>
           <Title>Title</Title>
