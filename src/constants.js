@@ -38,6 +38,11 @@ export const DEFAULT_PALETTE = {
       aliases: ["main", "brand", "red", "pink"],
       value: "#f00",
       unit: "hex"
+    },
+    {
+      aliases: ["blue", "marine", "aqua"],
+      value: "rgb(0, 0, 255)",
+      unit: "rgba"
     }
   ]
 }

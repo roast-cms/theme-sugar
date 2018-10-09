@@ -48,5 +48,9 @@
     "hooks": {
       "pre-commit": "yarn lint:fix && yarn prettier"
     }
+  },
+  "dependencies": {
+    "hex-rgb": "^3.0.0",
+    "rgb-hex": "^2.1.0"
   }
 }

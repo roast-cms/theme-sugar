@@ -1,4 +1,6 @@
 import { DEFAULT_OPTIONS, DEFAULT_PALETTE } from "./constants"
+import hexRgb from "hex-rgb"
+import rgbHex from "rgb-hex"
 
 export const S = (userPalette = {}) => {
   const getRule = function(alias, unit, format = "css") {
@@ -51,6 +53,18 @@ export const convertUnit = function(from, to) {
   return matrix[from] / matrix[to]
 }
 
+export const convertColor = (from, to, value) => {
+  if (from.includes("hex") && to.includes("rgb")) {
+    const rgba = hexRgb(value)
+    return `rgba(${rgba.red}, ${rgba.green}, ${rgba.blue}, ${rgba.alpha})`
+  }
+  if (from.includes("rgb") && to.includes("hex")) {
+    const hex = rgbHex(value)
+    return `#${hex}`
+  }
+  return value
+}
+
 export const printRule = (value, unit, format = "css") => {
   const print =
     format === "css" ? value + (unit === "pixels" ? "px" : unit) : value
@@ -62,9 +76,12 @@ export const unitFactory = props => {
   const { palette, preset, alias, unit, format } = props
   const schema = aliasSearch.call(preset, alias)
   if (!schema.value) return
-  if (("" + schema.value).includes("#")) {
-    value = schema.value
+  if (
+    ("" + schema.value).includes("#") ||
+    ("" + schema.value).includes("rgb")
+  ) {
     _unit = unit ? unit : schema.unit
+    return convertColor(schema.unit, _unit, schema.value)
   } else {
     _unit =
       unit === null
@@ -74,7 +91,6 @@ export const unitFactory = props => {
           : unit
     unitRatio = convertUnit.apply(palette, [schema.unit, _unit])
     value = schema.value * unitRatio
+    return printRule(value, _unit, format)
   }
-
-  return printRule(value, _unit, format)
 }
