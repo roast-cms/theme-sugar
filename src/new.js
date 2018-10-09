@@ -58,18 +58,23 @@ export const printRule = (value, unit, format = "css") => {
 }
 
 export const unitFactory = props => {
-  let unitRatio
+  let unitRatio, value, _unit
   const { palette, preset, alias, unit, format } = props
   const schema = aliasSearch.call(preset, alias)
   if (!schema.value) return
+  if (("" + schema.value).includes("#")) {
+    value = schema.value
+    _unit = unit ? unit : schema.unit
+  } else {
+    _unit =
+      unit === null
+        ? schema.unit
+        : typeof unit === "undefined"
+          ? palette.options.default.unit
+          : unit
+    unitRatio = convertUnit.apply(palette, [schema.unit, _unit])
+    value = schema.value * unitRatio
+  }
 
-  const _unit =
-    unit === null
-      ? schema.unit
-      : typeof unit === "undefined"
-        ? palette.options.default.unit
-        : unit
-  unitRatio = convertUnit.apply(palette, [schema.unit, _unit])
-  const value = schema.value * unitRatio
   return printRule(value, _unit, format)
 }

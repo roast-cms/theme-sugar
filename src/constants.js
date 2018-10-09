@@ -36,7 +36,8 @@ export const DEFAULT_PALETTE = {
   color: [
     {
       aliases: ["main", "brand", "red", "pink"],
-      value: "#f00"
+      value: "#f00",
+      unit: "hex"
     }
   ]
 }

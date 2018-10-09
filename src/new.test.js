@@ -136,6 +136,6 @@ describe("S().text", () => {
 
 describe("S().color", () => {
   it("can return color by alias", () => {
-    expect(S().color("red")).toEqual("#f00")
+    expect(S().color("red", "rgb", "value")).toEqual("#f00")
   })
 })
