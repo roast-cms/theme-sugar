@@ -1,81 +1,208 @@
-//
-// tools
-import React from "react"
-import { render } from "react-dom"
-import styled, { ThemeProvider } from "styled-components"
-//
-// theming tools and fonts
-import { Sugar } from "../src/index"
-import "typeface-yanone-kaffeesatz"
-import "typeface-lobster-two"
 import "typeface-indie-flower"
-//
-// styled components
-const Main = styled.div`
-  & > * ::selection {
-    background: ${props => props.theme.color.highlight()};
-    color: ${props => props.theme.color.background()};
+import "typeface-lobster-two"
+import "typeface-yanone-kaffeesatz"
+
+import styled, { ThemeProvider, css } from "styled-components"
+
+import { render } from "react-dom"
+import React from "react"
+
+// theming
+
+import { S } from "../src/"
+
+const theme = {
+  color: [
+    {
+      find: ["main", "brand", "red", "brown"],
+      value: "#bd4336",
+      unit: "hex"
+    },
+    {
+      find: ["foreground", "text"],
+      value: "#fdecff",
+      unit: "hex"
+    },
+    {
+      find: ["background"],
+      value: "#2c2c2c",
+      unit: "hex"
+    },
+    {
+      find: ["highlight", "yellow", "selection"],
+      value: "rgb(255,255,0)",
+      unit: "rgb"
+    }
+  ],
+  text: [
+    {
+      find: ["headingFont", "heading", "title-text", "title"],
+      value: "'Yanone Kaffeesatz', sans-serif",
+      unit: "name"
+    },
+    {
+      find: ["body", "font", "text", "paragraph"],
+      value: "'Lobster Two', serif",
+      unit: "name"
+    },
+    {
+      find: ["special"],
+      value: "'Indie Flower', cursive",
+      unit: "name"
+    },
+    {
+      find: ["line-height", "line", "lineHeight"],
+      value: 1.75,
+      unit: "em"
+    },
+    {
+      find: ["letter-spacing", "letters", "lspacing", "letterSpacing"],
+      value: 1.025,
+      unit: "em"
+    }
+  ],
+  size: [
+    {
+      find: ["wide-column", "big-col", "big-column", "largeColumn", 900],
+      value: 900,
+      unit: "px"
+    },
+    {
+      find: [
+        "short-column",
+        "med-col",
+        "medium-column",
+        "column-m",
+        "c-m",
+        700
+      ],
+      value: 700,
+      unit: "px"
+    },
+    {
+      find: ["std-padding", "padding", "large", "lg", 2],
+      value: 2,
+      unit: "em"
+    },
+    {
+      find: ["spacing", "med", "std-spacing", "spacer", "m", 1.5],
+      value: 1.5,
+      unit: "em"
+    },
+    {
+      find: ["std-border", "border", "thick-line", 10],
+      value: 10,
+      unit: "px"
+    },
+    {
+      find: [
+        "standard",
+        "base",
+        "main",
+        "text",
+        "font",
+        "border-radius",
+        "borderRadius",
+        "radius",
+        "sm",
+        1
+      ],
+      value: 1,
+      unit: "em"
+    },
+    {
+      find: ["smaller", "sm", "xs"],
+      value: 0.85,
+      unit: "em"
+    }
+  ],
+  media: [
+    {
+      find: ["huge"],
+      value: 1280,
+      unit: "px"
+    }
+  ],
+  options: {
+    default: {
+      unit: "em",
+      em: 28
+    }
   }
-  ${props => props.theme.size.font.auto} ${props =>
-      props.theme.typography.text.auto} margin: 0 auto;
-  max-width: ${props => props.theme.size.block.column.m}px;
-  ${props =>
-    props.theme.size.breakpoint.min.xxl`max-width: ${props =>
-      props.theme.size.block.column.l}px;`};
-  padding: 4em ${props => props.theme.size.block.padding}em;
+}
+
+// helpers
+
+const hugeScreen = (...args) => css`
+  @media (min-width: ${props => props.theme.media("huge", null)}) {
+    ${css(...args)};
+  }
+`
+
+const font = css`
+  color: ${props => props.theme.color("text")};
+  font-family: ${props => props.theme.text("body")};
+  font-size: ${props => props.theme.size("text", "px")};
+  line-height: ${props => props.theme.text("lineHeight")};
+  letter-spacing: ${props => props.theme.text("letter-letterSpacing")};
+`
+const headerFont = css`
+  ${font}
+  font-family: ${props => props.theme.text("heading")};
+  font-size: ${props => props.theme.size(2)};
+`
+
+// css
+
+const Main = styled.div`
+  ${font}
+  margin: 0 auto;
+
+  ${hugeScreen`
+    max-width: ${props => props.theme.size(900)}
+  `}
+
+  max-width: ${props => props.theme.size("short-column")};
+  padding: ${props =>
+    props.theme.size("padding", null, "value") * 2}em ${props =>
+  props.theme.size("padding")};
+
+  & > * ::selection {
+    background: ${props => props.theme.color("highlight")};
+    color: ${props => props.theme.color("text")};
+  }
 `
 const Article = styled.article`
-  background: ${props => props.theme.color.background()};
-  padding: ${props => props.theme.size.block.spacing}em;
-  border-radius: ${props => props.theme.effects.borderRadius.med}em;
-  border: ${props => props.theme.size.block.border}px solid
-    ${props => props.theme.color.highlight()};
+  background: ${props => props.theme.color("background")};
+  padding: ${props => props.theme.size("padding")};
+  border-radius: ${props => props.theme.size("borderRadius")};
+  border: ${props => props.theme.size("border")} solid
+    ${props => props.theme.color("highlight")};
 `
 const Title = styled.h1`
-  ${props => props.theme.typography.title.auto} font-size: ${props =>
-      props.theme.size.font.make.larger}em;
-  hyphens: auto;
+  ${headerFont} hyphens: auto;
 `
 const Subtitle = styled.h2`
-  ${props => props.theme.typography.title.auto} font-size: ${props =>
-      props.theme.size.font.make.larger / 2}em;
+  ${headerFont}
+  font-size: ${props => props.theme.size("med")}
 `
-const Branded = styled.strong`color: ${props => props.theme.color.brand()};`
+const Branded = styled.strong`
+  color: ${props => props.theme.color("red")};
+`
 const BrandedFade = styled(Branded)`
-  color: ${props => props.theme.color.brand(props.theme.opacity.half)};
-  font-size: ${props => props.theme.size.font.make.smaller}em;
+  color: ${props => props.theme.color("red")};
+  opacity: 0.5;
+  font-size: ${props => props.theme.size("smaller")};
 `
 const SpecialFont = styled.span`
-  font-family: ${props => props.theme.font_special};
+  font-family: ${props => props.theme.text("special")};
 `
-//
-// app
+
+// render
+
 render(
   <div>
-    <ThemeProvider
-      theme={{
-        ...Sugar({
-          color_brand: "rgb(189,67,54)",
-          color_background: "rgb(44,44,44)",
-          color_foreground: "rgb(224,213,255)",
-          //
-          font_heading: "'Yanone Kaffeesatz', sans-serif",
-          font_heading_weight: 400,
-          //
-          font_body: "'Lobster Two', serif",
-          //
-          size_base: 28,
-          size_column_medium: 700,
-          size_column_large: 900,
-          size_block_padding: 2,
-          size_block_spacing: 1.5,
-          size_block_border: 10,
-          //
-          effects_border_radius: 1
-        }),
-        font_special: "'Indie Flower', cursive"
-      }}
-    >
+    <ThemeProvider theme={S(theme)}>
       <Main>
         <Article>
           <Title>Title</Title>

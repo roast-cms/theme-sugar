@@ -1,54 +1,72 @@
-// styles
-import { css } from "styled-components"
+import hexRgb from "hex-rgb"
+import rgbHex from "rgb-hex"
 
-// css
-export const breakpoints = {
-  // base: pixels
-  xxl: [1601, 160000000],
-  xl: [1081, 1600],
-  l: [751, 1080],
-  m: [521, 750],
-  s: [321, 520],
-  xs: [0, 320]
+export const aliasSearch = function(alias) {
+  let search = {}
+  const iterate = thing =>
+    this.forEach((v, index) => {
+      if (v && v.find && v.find.indexOf(thing) > -1) {
+        search = this[index]
+      }
+    })
+  Object.prototype.toString.call(alias) === "[object Array]"
+    ? alias.forEach(string => iterate(string))
+    : iterate(alias)
+  return search
 }
 
-// px to em
-const pxEm = px => px / 16
+export const convertUnit = function(from, to) {
+  const matrix = {
+    em: this.options.default.em,
+    px: 1,
+    pixels: 1
+  }
+  return matrix[from] / matrix[to]
+}
 
-//
-// function to convert rgb value to rgba
-export const rgba = (rgb, a = 1) =>
-  `${rgb.replace(")", "").replace("rgb", "rgba")}, ${a})`
+export const convertColor = (from, to, value) => {
+  if (from.includes("hex") && to.includes("rgb")) {
+    const rgba = hexRgb(value)
+    return `rgba(${rgba.red}, ${rgba.green}, ${rgba.blue}, ${rgba.alpha})`
+  }
+  if (from.includes("rgb") && to.includes("hex")) {
+    const hex = rgbHex(value)
+    return `#${hex}`
+  }
+  return value
+}
 
+export const printRule = (value, unit, format = "css") => {
+  const print =
+    format === "css" ? value + (unit === "pixels" ? "px" : unit) : value
+  return print
+}
 
-// print media queries for exact range:
-export const exact = Object.keys(breakpoints).reduce((accumulator, label) => {
-  accumulator[label] = (...args) => css`
-		@media (min-width: ${pxEm(breakpoints[label][0])}em) and (max-width: ${pxEm(
-    breakpoints[label][1]
-  )}em) {
-			${css(...args)}
-		}
-	`
-  return accumulator
-}, {})
-
-// print media queries with no max value:
-export const min = Object.keys(breakpoints).reduce((accumulator, label) => {
-  accumulator[label] = (...args) => css`
-		@media (min-width: ${pxEm(breakpoints[label][0])}em) {
-			${css(...args)}
-		}
-	`
-  return accumulator
-}, {})
-
-// print media queries with no min value:
-export const max = Object.keys(breakpoints).reduce((accumulator, label) => {
-  accumulator[label] = (...args) => css`
-		@media (max-width: ${pxEm(breakpoints[label][1])}em) {
-			${css(...args)}
-		}
-	`
-  return accumulator
-}, {})
+export const unitFactory = props => {
+  let unitRatio, value, _unit
+  const { palette, preset, alias, unit, format } = props
+  const schema = aliasSearch.call(preset, alias)
+  if (!schema.value) return
+  // named values, like font-name
+  if (("" + schema.unit).includes("name")) {
+    return schema.value
+  }
+  // color
+  if (
+    ("" + schema.value).includes("#") ||
+    ("" + schema.value).includes("rgb")
+  ) {
+    _unit = unit ? unit : schema.unit
+    return convertColor(schema.unit, _unit, schema.value)
+  }
+  // measurement units
+  _unit =
+    unit === null
+      ? schema.unit
+      : typeof unit === "undefined"
+        ? palette.options.default.unit
+        : unit
+  unitRatio = convertUnit.apply(palette, [schema.unit, _unit])
+  value = schema.value * unitRatio
+  return printRule(value, _unit, format)
+}
