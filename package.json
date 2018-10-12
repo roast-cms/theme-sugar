@@ -47,7 +47,7 @@
     }
   },
   "dependencies": {
-    "hex-rgb": "^3.0.0",
-    "rgb-hex": "^2.1.0"
+    "hex-rgb": "git://github.com/dmitrizzle/hex-rgb.git#master",
+    "rgb-hex": "git://github.com/dmitrizzle/rgb-hex.git#master"
   }
 }

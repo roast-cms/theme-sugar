@@ -2987,9 +2987,9 @@ hawk@3.1.3, hawk@~3.1.3:
     hoek "2.x.x"
     sntp "1.x.x"
 
-hex-rgb@^3.0.0:
+"hex-rgb@git://github.com/dmitrizzle/hex-rgb.git#master":
   version "3.0.0"
-  resolved "https://registry.yarnpkg.com/hex-rgb/-/hex-rgb-3.0.0.tgz#bdff98ce1c18daec8ed87797fe13b02831a9515a"
+  resolved "git://github.com/dmitrizzle/hex-rgb.git#067fdb350ea1178474c15e6f7df7ef3ca7007720"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
@@ -5759,9 +5759,9 @@ ret@~0.1.10:
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
 
-rgb-hex@^2.1.0:
+"rgb-hex@git://github.com/dmitrizzle/rgb-hex.git#master":
   version "2.1.0"
-  resolved "https://registry.yarnpkg.com/rgb-hex/-/rgb-hex-2.1.0.tgz#c773c5fe2268a25578d92539a82a7a5ce53beda6"
+  resolved "git://github.com/dmitrizzle/rgb-hex.git#989fa605ac9df3f5611be68faf830c985378a191"
 
 right-align@^0.1.1:
   version "0.1.3"
