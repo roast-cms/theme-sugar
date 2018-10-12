@@ -1,6 +1,6 @@
 {
   "name": "@roast-cms/theme-sugar",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Customizeable, extendable theming engine for JavaScript CSS processors.",
   "main": "dist/index.js",
   "repository": "https://github.com/roast-cms/theme-sugar.git",
