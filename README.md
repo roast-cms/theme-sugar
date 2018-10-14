@@ -10,6 +10,10 @@
 
 ---
 
+Looking for an **older version** of this package? `react-sugar-styled` is here > https://github.com/roast-cms/theme-sugar/tree/6e53ed9dac55009f8c3c9c2a0340ff83485e6c62 - under the same repo, a few commits back.
+
+---
+
 _Below examples are built with assumption you are using `styled-components` in your project._
 
 ```
